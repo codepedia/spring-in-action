@@ -15,7 +15,8 @@ import org.springframework.stereotype.Controller;
 	import org.springframework.web.bind.annotation.PostMapping;
 	import org.springframework.web.bind.annotation.RequestMapping;
 
-	import lombok.extern.slf4j.Slf4j;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 	import tacos.Ingredient;
 	import tacos.Ingredient.Type;
 	import tacos.Taco;
@@ -35,7 +36,17 @@ import org.springframework.stereotype.Controller;
 	public class DesignTacoController {
 
 	//end::head[]
-
+		
+		
+		
+		public static String myfunc(String s) {
+			
+			System.out.println(s);
+			
+			return s;
+			
+			
+		}
 	@ModelAttribute
 	public void addIngredientsToModel(Model model) {
 		List<Ingredient> ingredients = Arrays.asList(
@@ -51,8 +62,11 @@ import org.springframework.stereotype.Controller;
 		  new Ingredient("SRCR", "Sour Cream", Type.SAUCE)
 		);
 		
+
 		Type[] types = Ingredient.Type.values();
 		for (Type type : types) {
+			
+			System.out.println("filterbyType used for :   " + "toStringed type" + type.toString() + "  <- vs ->" + type );		
 		  model.addAttribute(type.toString().toLowerCase(),
 		      filterByType(ingredients, type));
 		  
@@ -60,15 +74,17 @@ import org.springframework.stereotype.Controller;
 		  
 		}
 	}
-	
+		
 	//tag::showDesignForm[]
 	  @GetMapping
 	  public String showDesignForm(Model model) {
-	    model.addAttribute("design", new Taco());
+		 	  
+	//public class Taco {private String name;   private List<String> ingredients;}
+
+	    model.addAttribute("design", new Taco()); // new instance of taco and 	                                              // a list of the ingredients to be added 
 	    return "design";
 	  }
-	  
-	  
+
 	  // Takes an array list of ingredients created by the add ingrdnt methods 
 	  // and filters the result by the type, usng stream.
 	  private Object filterByType(List<Ingredient> ingredients, Type type) {
@@ -76,6 +92,23 @@ import org.springframework.stereotype.Controller;
 		   return ingredients.stream().filter(x -> x.getType().equals(type))
 				                              .collect(Collectors.toList());
 		}
+	  
+	  @PostMapping
+	  public String processDesign(String design) {
+		  // This should be of type Design and not String
+		  System.out.println("Print Desgin vals   :" + design); //DEBUG: ERROR:Process Design:  null
+		  log.info("Process Design:  " + design );
+		  
+		/*"redirect:", indicating that this is a redirect view.
+		More specifically, it indicates that after processDesign() 
+		completes, the user’s browser should be redirected to the 
+		relative path /order/current.*/
+		  
+		  System.out.println("Procesing the Design object");
+		  
+		  return "redirect:/orders/current";
+	  }
+	  
 	  
 	
 	}
