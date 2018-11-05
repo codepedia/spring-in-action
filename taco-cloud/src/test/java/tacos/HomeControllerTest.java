@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 //ApplicationContext will be loaded from "classpath:/com/example/OrderServiceTest-context.xml"
 @ContextConfiguration
-@WebMvcTest(HomeController.class)
+//@WebMvcTest(HomeController.class) // We are no longer using HomeController class.
 public class HomeControllerTest {
 	
 	

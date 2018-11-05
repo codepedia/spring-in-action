@@ -4,8 +4,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
+
 @Configuration //@Configuration classes are typically bootstrapped using either AnnotationConfigApplicationContext or its web-capable variant
 public class WebConfig implements WebMvcConfigurer {
+	/*prefer creating a new configuration class for each kind of configuration (web, data, security, and so
+      on), keeping the application bootstrap configuration clean and simple.*/
 	
 	//https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/WebMvcConfigurer.html
 	@Override
@@ -23,9 +27,6 @@ public class WebConfig implements WebMvcConfigurer {
 		
 	      registry.addViewController("/").setViewName("home");
 	}
-	
-	
-	
 
 }
 

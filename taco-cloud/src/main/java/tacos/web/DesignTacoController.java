@@ -93,18 +93,21 @@ import lombok.extern.slf4j.Slf4j;
 				                              .collect(Collectors.toList());
 		}
 	  
-	  @PostMapping
-	  public String processDesign(String design) {
+	  @PostMapping		  
+	  public String processOrder(@Valid Taco design, Errors errors) {
+	    if (errors.hasErrors()) {
+		    return "orderForm";
+		  }
 		  // This should be of type Design and not String
 		  System.out.println("Print Desgin vals   :" + design); //DEBUG: ERROR:Process Design:  null
 		  log.info("Process Design:  " + design );
 		  
-		/*"redirect:", indicating that this is a redirect view.
-		More specifically, it indicates that after processDesign() 
-		completes, the user’s browser should be redirected to the 
-		relative path /order/current.*/
+		  /*"redirect:", indicating that this is a redirect view.
+		   More specifically, it indicates that after processDesign() 
+		   completes, the user’s browser should be redirected to the 
+		   relative path /order/current.*/
 		  
-		  System.out.println("Procesing the Design object");
+		  System.out.println("Procesing the Design object" + design);
 		  
 		  return "redirect:/orders/current";
 	  }
