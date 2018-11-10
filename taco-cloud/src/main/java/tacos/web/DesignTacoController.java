@@ -1,22 +1,17 @@
 	package tacos.web;
-
 	import java.util.Arrays;
 	import java.util.List;
 	import java.util.stream.Collectors;
-
 	import javax.validation.Valid;
-
-import org.junit.Before;
-import org.springframework.stereotype.Controller;
+    import org.springframework.stereotype.Controller;
 	import org.springframework.ui.Model;
 	import org.springframework.validation.Errors;
 	import org.springframework.web.bind.annotation.GetMapping;
 	import org.springframework.web.bind.annotation.ModelAttribute;
 	import org.springframework.web.bind.annotation.PostMapping;
 	import org.springframework.web.bind.annotation.RequestMapping;
-
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+    import lombok.Data;
+    import lombok.extern.slf4j.Slf4j;
 	import tacos.Ingredient;
 	import tacos.Ingredient.Type;
 	import tacos.Taco;
@@ -86,9 +81,10 @@ import lombok.extern.slf4j.Slf4j;
 	  }
 
 	  // Takes an array list of ingredients created by the add ingrdnt methods 
-	  // and filters the result by the type, usng stream.
+	  // and filters the result by the type, using stream.
+	  
+	  //Class Object is the root of the class hierarchy. Every class has Object as a superclass. All objects, including arrays, implement the methods of this class.
 	  private Object filterByType(List<Ingredient> ingredients, Type type) {
-			// TODO Auto-generated method stub
 		   return ingredients.stream().filter(x -> x.getType().equals(type))
 				                              .collect(Collectors.toList());
 		}
