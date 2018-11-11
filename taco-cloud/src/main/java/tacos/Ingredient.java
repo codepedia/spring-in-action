@@ -18,14 +18,10 @@ public class Ingredient {
 	private String name;
 	private Type type; 
 	
-
-	
 	public static enum Type { WRAP , PROTEIN , VEGGIES, CHEESE, SAUCE}
-		
-//	
-//		 
+
 //		 Ingredient in = new Ingredient(); // test lomobk
 //		 in.setId("zz"); 
 //		 System.out.println(in.getId());	 
-//	 
+
 }
