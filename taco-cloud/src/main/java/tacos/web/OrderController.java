@@ -14,8 +14,6 @@ import tacos.Order;
 for @RequestMapping(method = RequestMethod.GET).*/
 public class OrderController {
 	
-	
-
 @GetMapping("/current")
 public String orderForm(Model model) {
 model.addAttribute("order", new Order());

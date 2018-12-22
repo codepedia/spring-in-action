@@ -1,0 +1,10 @@
+As you can see, JdbcIngredientRepository is annotated with @Repository. This
+annotation is one of a handful of stereotype annotations that Spring defines, including
+@Controller and @Component. By annotating JdbcIngredientRepository with
+@Repository, you declare that it should be automatically discovered by Spring component
+scanning and instantiated as a bean in the Spring application context.
+When Spring creates the JdbcIngredientRepository bean, it injects it with Jdbc-
+Template via the @Autowired annotated construction. The constructor assigns
+JdbcTemplate to an instance variable that will be used in other methods to query and
+insert into the database. Speaking of those other methods, let’s take a look at the
+implementations of findAll() and findById().
