@@ -10,8 +10,8 @@ import lombok.experimental.Accessors;
 import tacos.Ingredient.Type;
 @Data
 @RequiredArgsConstructor
-@Accessors(chain = true)    // z
-@AllArgsConstructor         //z
+//@Accessors(chain = true)    // z
+//@AllArgsConstructor         //z
 public class Ingredient {
 	
 	private String id;

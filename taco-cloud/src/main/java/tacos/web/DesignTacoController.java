@@ -38,10 +38,10 @@ import tacos.data.IngredientRepository;
 		
 		
 		
-		public static String myfunc(String s) {
-			System.out.println(s);
-			return s;
-		}
+	 public static String myfunc(String s) {
+		System.out.println(s);
+		return s;
+	}
 				
 	/*With JdbcIngredientRepository complete, you can now inject it into Design-
 	TacoController and use it to provide a list of Ingredient objects, instead of hard coding*/	
@@ -89,8 +89,9 @@ import tacos.data.IngredientRepository;
 		/*Get the list of enums*/
 		Type[] types = Ingredient.Type.values();
 		
-		for (Type type : types) {  
-		}
+		for (Type type : types) {
+		model.addAttribute(type.toString().toLowerCase(),filterByType(ingredients, type));}
+				
 	    return "design";
 	    
 	    // delete   
@@ -126,7 +127,4 @@ import tacos.data.IngredientRepository;
 		  
 		  return "redirect:/orders/current";
 	  }
-	  
-	  
-	
 	}

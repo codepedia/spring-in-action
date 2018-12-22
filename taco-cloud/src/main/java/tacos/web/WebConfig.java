@@ -5,6 +5,12 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
+/*when a controller is
+simple enough that it doesn’t populate a model or process input—as is the case with
+your HomeController—there’s another way that you can define the controller. Have a
+look at the next listing to see how you can declare a view controller—a controller that
+does nothing but forward the request to a view.*/
+
 
 @Configuration //@Configuration classes are typically bootstrapped using either AnnotationConfigApplicationContext or its web-capable variant
 public class WebConfig implements WebMvcConfigurer {

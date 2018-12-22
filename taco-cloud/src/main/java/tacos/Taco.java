@@ -21,7 +21,6 @@ private String name;
 // tag::allButValidation[]
 private List<String> ingredients; /**/
 
-
 private Long id;
 private Date createdAt;
 
