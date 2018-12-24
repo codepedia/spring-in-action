@@ -9,6 +9,17 @@ public class PrintBeans {
     @Autowired
     ApplicationContext applicationContext;
 
-       // System.out.println(Arrays.asList(applicationContext.getBeanDefinitionNames()));
+    public void printBeans() {
+        System.out.println(Arrays.asList(applicationContext.getBeanDefinitionNames()));
+    }
+    
+    
+    
+    public void main(String [] args) {
+    	
+    
+    	printBeans(); 
+    	
+    	
+    }
 }
-

@@ -8,3 +8,7 @@ Template via the @Autowired annotated construction. The constructor assigns
 JdbcTemplate to an instance variable that will be used in other methods to query and
 insert into the database. Speaking of those other methods, let’s take a look at the
 implementations of findAll() and findById().
+----------------------------
+
+#lokesh  -- from stackoverflow
+https://howtodoinjava.com/spring-5-tutorial/

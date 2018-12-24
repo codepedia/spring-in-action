@@ -19,7 +19,7 @@ private String name;
 // end::allButValidation[]
 @Size(min=1, message="You must choose at least 1 ingredient")
 // tag::allButValidation[]
-private List<String> ingredients; /**/
+private List<Ingredient> ingredients; /*Chaging the Ingredients t type ingredient fixed issues in srvc class*/
 
 private Long id;
 private Date createdAt;
