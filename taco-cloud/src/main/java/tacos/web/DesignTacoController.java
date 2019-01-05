@@ -13,7 +13,9 @@ import org.springframework.stereotype.Controller;
 	import org.springframework.web.bind.annotation.ModelAttribute;
 	import org.springframework.web.bind.annotation.PostMapping;
 	import org.springframework.web.bind.annotation.RequestMapping;
-    import lombok.Data;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
+import lombok.Data;
     import lombok.extern.slf4j.Slf4j;
 	import tacos.Ingredient;
 	import tacos.Ingredient.Type;
@@ -33,6 +35,10 @@ import tacos.data.IngredientRepository;
 	@RequestMapping("/design")/*specifies that when an HTTP GET request is received for
     design, showDesignForm() will be called to handle the req*/
 	
+	@SessionAttributes("order")/*
+    The class-level @SessionAttributes annotation specifies any model
+    objects like the order attribute that should be kept in session and available across
+    multiple requests. */
 	
 	public class DesignTacoController {
 
@@ -84,7 +90,8 @@ import tacos.data.IngredientRepository;
 	  public String showDesignForm(Model model) {
 		
 	    /*After removing the hard coded ingredinets vals, we now do it via calling the
-	     * registered repository bean, ingredientRepo. Create an empty list of type ingredients and aadd the vals */
+	     * registered repository bean, ingredientRepo. Create an empty list of type ingredients
+	     *  and aadd the vals */
 		List<Ingredient> ingredients = new ArrayList<>();
 		ingredientRepo.findAll().forEach( x -> ingredients.add(x));
 		
@@ -101,11 +108,13 @@ import tacos.data.IngredientRepository;
 	    /*model.addAttribute("design", new Taco()); //new instance of taco (name, id , list of ingredients) */
 	  }
 
-	  // Takes an array list of ingredients created by the add ingrdnt methods 
+	  // Takes an array list of ingredients created by the add ingredeints methods 
 	  // and filters the result by the type, using stream.
 	  
-	  //Class Object is the root of the class hierarchy. Every class has Object as a superclass. All objects, including arrays, implement the methods of this class.
-	  //fetches all the ingredients from the database before filtering them into distinct type in the model.
+	  /*Class Object is the root of the class hierarchy. Every class has Object as a superclass. 
+	   * All objects, including arrays, implement the methods of this class.
+	   * fetches all the ingredients from the database before filtering them into 
+	   * distinct type in the model. */
 	  private Object filterByType(List<Ingredient> ingredients, Type type) {
 		   return ingredients.stream().filter(x -> x.getType().equals(type))
 				                              .collect(Collectors.toList());

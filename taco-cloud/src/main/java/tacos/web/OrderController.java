@@ -20,7 +20,6 @@ model.addAttribute("order", new Order());
 return "orderForm";
  }
 
-
 @PostMapping
 public String processOrder(Order order) {	
 	log.info("Order submitted : "  + order);

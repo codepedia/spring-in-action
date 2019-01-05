@@ -12,3 +12,14 @@ implementations of findAll() and findById().
 
 #lokesh  -- from stackoverflow
 https://howtodoinjava.com/spring-5-tutorial/
+
+
+--------------------------------------------------------------------
+# adding the word controller makes the class discoverable by springboot
+ They’re all annotated with @Controller to indicate that they’re controller
+classes that should be automatically discovered by Spring component scanning
+and instantiated as beans in the Spring application context.
+ All but HomeController are annotated with @RequestMapping at the class level
+to define a baseline request pattern that the controller will handle.
+ They all have one or more methods that are annotated with @GetMapping or
+@PostMapping to provide

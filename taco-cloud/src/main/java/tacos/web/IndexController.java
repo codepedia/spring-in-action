@@ -14,9 +14,7 @@ public class IndexController implements ErrorController{
         // TODO Auto-generated method stub
         return "The resource you are trying to access is not mapped correctly";
     }
-   
 }
-
 
 /* Add this class that implements error controller so we get a custom message
  * Whitelabel Error Page

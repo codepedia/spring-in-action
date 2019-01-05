@@ -19,8 +19,7 @@ import tacos.Taco;
 public class JdbcTacoRepository implements TacoRepository {
 	
 	 private JdbcTemplate jdbc;
-	 private DataSource dataSource;
-	 
+ 
 	public JdbcTacoRepository(JdbcTemplate jdbc) {
 		this.jdbc = jdbc;
 	}
@@ -73,9 +72,13 @@ return taco;
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbc.update(psc, keyHolder);
-		return keyHolder.getKey().longValue();
+		return keyHolder.getKey().longValue();/*return the taco ID*/
 	}
 	
+	
+	/*method starts by calling the private saveTacoInfo()
+	method, and then uses the taco ID returned from that method to call saveIngredient-
+	ToTaco(), which saves each ingredient.*/
 	
 	public void saveIngredientToTaco(Ingredient ingredient ,long tacoid) {
 		
