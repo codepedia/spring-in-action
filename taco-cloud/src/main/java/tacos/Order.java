@@ -1,5 +1,7 @@
 package tacos;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;
@@ -7,6 +9,9 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
+
+
+
 
 @Data
 public class Order {
@@ -54,6 +59,13 @@ public class Order {
 	  
 	  private Long id;
 	  private Date placedAt;// see below
+	  private List<Taco> tacos = new ArrayList<>();
+	  
+	  public void addDesign(Taco design) {  /*Is this right?*/
+		 this.tacos.add(design);  /*add designs for the tacos, list of tacos List<Taco>*/
+	  }
+	  
+	  
 	  
 	  /*When persisting objects to a database, it’s generally a good idea to have one field that
        uniquely identifies the object. Your Ingredient class already has an id field, but you

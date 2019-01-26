@@ -19,8 +19,10 @@ import lombok.Data;
     import lombok.extern.slf4j.Slf4j;
 	import tacos.Ingredient;
 	import tacos.Ingredient.Type;
-	import tacos.Taco;
+import tacos.Order;
+import tacos.Taco;
 import tacos.data.IngredientRepository;
+import tacos.data.TacoRepository;
 
 	@Slf4j
 	/* https://ww.slf4j.org/) Logger in the class. This modest annotation has
@@ -42,10 +44,6 @@ import tacos.data.IngredientRepository;
 	
 	public class DesignTacoController {
 
-	//end::head[]
-		
-		
-		
 	 public static String myfunc(String s) {
 		System.out.println(s);
 		return s;
@@ -53,12 +51,29 @@ import tacos.data.IngredientRepository;
 				
 	/*With JdbcIngredientRepository complete, you can now inject it into Design-
 	TacoController and use it to provide a list of Ingredient objects, instead of hard coding*/	
-	private IngredientRepository  ingredientRepo;
+
+	  private final IngredientRepository ingredientRepo;
+	  private TacoRepository designRepo;
 	
-	@Autowired
-	public DesignTacoController(IngredientRepository ingredientRepo) {
+	
+	@Autowired  /* Dependency injection */
+	public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository designRepo) {
 	this.ingredientRepo = ingredientRepo;
+	this.designRepo     = designRepo;
 	}
+	
+	
+	  @ModelAttribute(name = "order")
+	  public Order order() {
+	    return new Order();
+	  }
+	  
+	  @ModelAttribute(name = "taco")
+	  public Taco taco() {
+	    return new Taco();
+	  }
+
+	  
 		
 		
 	/*@ModelAttribute
@@ -88,6 +103,17 @@ import tacos.data.IngredientRepository;
 	//tag::showDesignForm[]
 	  @GetMapping
 	  public String showDesignForm(Model model) {
+		  
+		  /*
+		   * Once the list of ingredients is ready, the next few lines of showDesignForm() filters
+             the list by ingredient type. A list of ingredient types is then added as an attribute to the
+             Model object that’s passed into showDesignForm(). Model is an object that ferries data
+             between a controller and whatever view is charged with rendering that data. Ultimately,
+             data that’s placed in Model attributes is copied into the servlet response attributes,
+             where the view can find them. The showDesignForm() method concludes by
+             returning "design", which is the logical name of the view that will be used to render
+             the model to the browser. 
+		   * */
 		
 	    /*After removing the hard coded ingredinets vals, we now do it via calling the
 	     * registered repository bean, ingredientRepo. Create an empty list of type ingredients
@@ -103,7 +129,7 @@ import tacos.data.IngredientRepository;
 				
 	    return "design";
 	    
-	    // delete   
+	    // deleted   
 	    // public class Taco {private String name;   private List<String> ingredients;}
 	    /*model.addAttribute("design", new Taco()); //new instance of taco (name, id , list of ingredients) */
 	  }

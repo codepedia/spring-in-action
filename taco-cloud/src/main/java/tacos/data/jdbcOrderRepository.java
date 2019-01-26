@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -13,6 +15,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import tacos.Order;
 import tacos.Taco;
 //DAO 
+
+
+/*Description: Parameter 0 of constructor in tacos.web.OrderController required a bean of type 'tacos.data.
+ * OrderRepository' that could not be found.
+ *Action:Consider defining a bean of type 'tacos.data.OrderRepository' in your configuration.
+   ***SOLVED BY ADDING @SERVICE ANNOTAION*/
+
+@Repository
 public  class jdbcOrderRepository implements OrderRepository{
 	
 	
@@ -61,7 +71,7 @@ public  class jdbcOrderRepository implements OrderRepository{
 	    /*Saves the order details and returns the id so we can asscoiate it with the Taco*/
 	    long orderId = saveOrderDetails(order);
 	    order.setId(orderId);
-	    List<Taco> tacos = order.getTacos();
+	    List<Taco> tacos = order.getTacos();  /*Tacos getter form order class, addd list of tacos*/
 	    for (Taco taco : tacos) {
 	        saveTacoOrder(taco, orderId);
 	    }
@@ -70,10 +80,24 @@ public  class jdbcOrderRepository implements OrderRepository{
 	  }
 	
 
+	  
+	  
 	  private long saveOrderDetails(Order order) {
+		    /*It’s easy to create such a Map by copying the values from Order into entries of the
+		    Map. But Order has several properties, and those properties all share the same name
+		    with the columns that they’re going into. Because of that, in saveOrderDetails(),
+		    I’ve decided to use Jackson’s ObjectMapper and its convertValue() method to convert
+		    an Order into a Map.1 Once the Map is created, you’ll set the placedAt entry to the
+		    value of the Order object’s placedAt property. This is necessary because Object-
+		    Mapper would otherwise convert the Date property into a long, which is incompatible
+		    with the placedAt field in the Taco_Order table.
+		    With a Map full of order data ready, you can now call executeAndReturnKey() on
+          orderInserter. This saves the order information to the Taco_Order table and returns
+          the database-generated ID as a Number object, which a call to longValue() converts to
+          a long returned from the method.*/
 		    @SuppressWarnings("unchecked")
 		    Map<String, Object> values =
-		        objectMapper.convertValue(order, Map.class);
+		        objectMapper.convertValue(order, Map.class);	    
 		    values.put("placedAt", order.getPlacedAt());
 
 		    long orderId =
@@ -83,14 +107,23 @@ public  class jdbcOrderRepository implements OrderRepository{
 		    return orderId;
 		  }
 	
+	  
+	  /*SimpleJdbcInsert has a couple of useful methods for executing the insert:
+        execute() and executeAndReturnKey(). Both accept a Map<String, Object>, where
+        the map keys correspond to the column names in the table the data is inserted into*/
 	
 	/*create table if not exists Taco_Order_Tacos (
 			tacoOrder bigint not null,
 			taco bigint not null
 		);*/
 	
+	  
 	
 	public void saveTacoOrder(Taco taco, long orderId) {
+		/*The saveTacoToOrder() method is significantly simpler. Rather than use the
+          ObjectMapper to convert an object to a Map, you create the Map and set the appropriate
+          values. Once again, the map keys correspond to column names in the table. A simple
+          call to the orderTacoInserter’s execute() method performs the insert.*/
 		
 		 Map<String, Object> values = new HashMap<>();
 		    values.put("tacoOrder", orderId);
@@ -100,3 +133,12 @@ public  class jdbcOrderRepository implements OrderRepository{
 
 	
 }
+
+
+
+/*Disclaimer: 
+I’ll admit that this is a hackish use of ObjectMapper, but you already have Jackson in the classpath; Spring
+Boot’s web starter brings it in. Also, using ObjectMapper to map an object into a Map is much easier than
+copying each property from the object into the Map. Feel free to replace the use of ObjectMapper with any
+code you prefer that builds the Map you’ll give to the inserter objects.	
+*/
