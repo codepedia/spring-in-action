@@ -16,10 +16,43 @@ https://howtodoinjava.com/spring-5-tutorial/
 
 --------------------------------------------------------------------
 # adding the word controller makes the class discoverable by springboot
- They’re all annotated with @Controller to indicate that they’re controller
+=>They’re all annotated with @Controller to indicate that they’re controller
 classes that should be automatically discovered by Spring component scanning
 and instantiated as beans in the Spring application context.
- All but HomeController are annotated with @RequestMapping at the class level
+=>All but HomeController are annotated with @RequestMapping at the class level
 to define a baseline request pattern that the controller will handle.
- They all have one or more methods that are annotated with @GetMapping or
+=>They all have one or more methods that are annotated with @GetMapping or
 @PostMapping to provide
+
+
+# Builidng a webclients
+https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/reactive/function/client/WebClient.Builder.html
+https://docs.spring.io/spring/docs/5.1.4.RELEASE/spring-framework-reference/web-reactive.html#webflux-client-builder-reactor
+
+
+
+# DDL for the app and the ERD
+
+The tables in figure 3.1 serve the following purposes:
+=>Ingredient—Holds ingredient information
+=>Taco—Holds essential information about a taco design
+=>Taco_Ingredients—Contains one or more rows for each row in Taco, mapping
+the taco to the ingredients for that taco
+=>Taco_Order—Holds essential order details
+=>Taco_Order_Tacos—Contains one or more rows for each row in Taco_Order,
+mapping the order to the tacos in the order
+
+
+
+-----------
+mport java.util.ArrayList;
+public class Conn4Col {
+    public int hMax; 
+    public int index;
+    public final int initialSize = 0;
+    public final int fullCol = 0;
+    public ArrayList<Integer> list;
+    (...)} 
+
+-----------
+because you have Spring Boot DevTools in place, you should be able to point your browser to http://localhost:8080/h2-console to see the H2 Console
