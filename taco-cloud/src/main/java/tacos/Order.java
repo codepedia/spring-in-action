@@ -1,70 +1,87 @@
+// tag::allButDetailProperties[]
 package tacos;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.CreditCardNumber;
 
 import lombok.Data;
 
-
-
-
 @Data
-public class Order {
+@Entity
+@Table(name="Taco_Order")
+public class Order implements Serializable {
 
-	  //end::allButValidation[]
-	  @NotBlank(message="Name is required")
-	  //tag::allButValidation[]
-	  private String name;
-	  //end::allButValidation[]
+  private static final long serialVersionUID = 1L;
+  
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
+  private Long id;
+  
+  private Date placedAt;
+  
+//end::allButDetailProperties[]
+  @NotBlank(message="Delivery name is required")
+  private String deliveryName;
+  
+  @NotBlank(message="Street is required")
+  private String deliveryStreet;
+  
+  @NotBlank(message="City is required")
+  private String deliveryCity;
+  
+  @NotBlank(message="State is required")
+  private String deliveryState;
+  
+  @NotBlank(message="Zip code is required")
+  private String deliveryZip;
 
-	  @NotBlank(message="Street is required")
-	  //tag::allButValidation[]
-	  private String street;
-	  //end::allButValidation[]
+  @CreditCardNumber(message="Not a valid credit card number")
+  private String ccNumber;
+  
+  @Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",
+           message="Must be formatted MM/YY")
+  private String ccExpiration;
 
-	  @NotBlank(message="City is required")
-	  //tag::allButValidation[]
-	  private String city;
-	  //end::allButValidation[]
+  @Digits(integer=3, fraction=0, message="Invalid CVV")
+  private String ccCVV;
 
-	  @NotBlank(message="State is required")
-	  //tag::allButValidation[]
-	  private String state;
-	  //end::allButValidation[]
+  /*
+  //tag::allButDetailProperties[]
+  ...
+  
+  //end::allButDetailProperties[]
+   */
+  
+//tag::allButDetailProperties[]
+  @ManyToMany(targetEntity=Taco.class)
+  private List<Taco> tacos = new ArrayList<>();
+  
+  public void addDesign(Taco design) {
+    this.tacos.add(design);
+  }
+  
+  @PrePersist
+  void placedAt() {
+    this.placedAt = new Date();
+  }
+  
+}
+//end::allButDetailProperties[]
 
-	  @NotBlank(message="Zip code is required")
-	  //tag::allButValidation[]
-	  private String zip;
-	  //end::allButValidation[]
-
-	  @CreditCardNumber(message="Not a valid credit card number")
-	  //tag::allButValidation[]
-	  private String ccNumber;
-	  //end::allButValidation[]
-
-	  @Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",
-	           message="Must be formatted MM/YY")
-	  //tag::allButValidation[]
-	  private String ccExpiration;
-	  //end::allButValidation[]
-
-	  @Digits(integer=3, fraction=0, message="Invalid CVV")
-	  //tag::allButValidation[]
-	  private String ccCVV;
-	  
-	  private Long id;
-	  private Date placedAt;// see below
-	  private List<Taco> tacos = new ArrayList<>();
-	  
-	  public void addDesign(Taco design) {  /*Is this right?*/
-		 this.tacos.add(design);  /*add designs for the tacos, list of tacos List<Taco>*/
-	  }
-	  
 	  
 	  
 	  /*When persisting objects to a database, it’s generally a good idea to have one field that
@@ -74,4 +91,4 @@ public class Order {
        placed. You’ll also need to add a field to each object to capture the date and time that
        the objects are saved. The following listing shows the new id and createdAt fields
        needed in the Taco class.*/
-}
+

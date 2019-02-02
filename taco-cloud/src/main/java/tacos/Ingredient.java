@@ -1,19 +1,23 @@
 /*Lombok to generate all of those missing methods as well as a constructor that accepts
 all final properties as arguments.*/
 
+
 package tacos;
-import lombok.AllArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
-import tacos.Ingredient.Type;
+
 @Data
-@RequiredArgsConstructor
-@Accessors(chain = true)    // z
-@AllArgsConstructor         //z
+@Entity
 public class Ingredient {
 	
+	  
+	@Id
 	private String id;
 	private String name;
 	private Type type; 
