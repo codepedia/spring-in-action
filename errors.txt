@@ -1,0 +1,31 @@
+#Duplicate method Ingredient() in type Ingredient
+@RequiredArgsConstructor  /*Duplicate method Ingredient() in type Ingredient*/
+
+@NoArgsConstructor(access=AccessLevel.PRIVATE, force=true)
+@Entity
+public class Ingredient {
+	
+	  
+	@Id
+	private String id;
+	private String name;
+	private Type type; 
+	
+	public static enum Type { WRAP , PROTEIN , VEGGIES, CHEESE, SAUCE}
+}
+
+-> Fixed the issue by making memeber variables final
+	@Id
+	private final String id;
+	private final String name;
+	private final Type type; 
+
+info:
+RequiredArgsConstructor, I believe, uses final to determine what attributes are needed for the constructor it creates.
+Since Ingredient has no final attributes it therefore creates a constructor with no arguments.
+Obviously, NoArgsConstructor also creates a constructor with no arguments, hence the error.
+
+
+
+
+--------------------------

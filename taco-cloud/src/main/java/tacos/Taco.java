@@ -18,7 +18,10 @@ import lombok.Data;
 @Entity
 public class Taco {
 // end::allButValidation[]
-		
+
+/*Because you’re relying on the database to automatically
+generate the ID value, you also annotate the id property with @GeneratedValue, specifying
+a strategy of AUTO.*/	
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
 private Long id;
