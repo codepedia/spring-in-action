@@ -1,0 +1,5 @@
+Skip test
+mvn install -Dmaven.test.skip=true
+
+# Run a specific test
+ mvn -Dtest=DesignAndOrderTacosBrowserTest -Dmaven.surefire.debug tes
