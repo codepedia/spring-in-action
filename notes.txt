@@ -56,3 +56,22 @@ public class Conn4Col {
 
 -----------
 because you have Spring Boot DevTools in place, you should be able to point your browser to http://localhost:8080/h2-console to see the H2 Console
+
+
+------------------------
+s you noted, -Dmaven.test.skip=true skips compiling the tests. More to the point, it skips building the test artifacts. A common practice for large projects is to have testing utilities and base classes shared among modules in the same project.
+
+This is accomplished by having a module require a test-jar of a previously built module:
+
+<dependency>
+  <groupId>org.myproject.mygroup</groupId>
+  <artifactId>common</artifactId>
+  <version>1.0</version>
+  <type>test-jar</type>
+  <scope>test</scope>
+</dependency>
+
+If -Dmaven.test.skip=true (or simply -Dmaven.test.skip) is specified, the test-jars aren't built, and any module that relies on them will fail its build.
+
+In contrast, when you use -DskipTests, Maven does not run the tests, but it does compile them and build the test-jar, making it available for the subsequent modules.
+------------------------

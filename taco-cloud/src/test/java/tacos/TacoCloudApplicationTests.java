@@ -9,17 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class TacoCloudApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
-	
-	
-	
-	public void main() {
-		
-		
-		
-		
-	}
+  @Test
+  public void contextLoads() {
+  }
 
 }
