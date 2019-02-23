@@ -32,6 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
 		   * bootstrap TacoCloudApplication*/
 		
 	      registry.addViewController("/").setViewName("home");
+	      registry.addViewController("/login");
 	}
 
 }

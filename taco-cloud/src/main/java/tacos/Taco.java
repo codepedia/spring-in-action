@@ -38,11 +38,6 @@ private String name;
 @ManyToMany(targetEntity=Ingredient.class)
 private List<Ingredient> ingredients; /*Changing the Ingredients t type ingredient fixed issues in srvc class*/
 
-
 private Date createdAt;
-
-
-
-
 
 }
