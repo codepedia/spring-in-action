@@ -1,0 +1,61 @@
+
+logging:
+  path: /var/logs/
+  file: TacoCloud.log
+  level:
+    root: WARN
+    org:
+      springframework:
+        security: DEBUG
+ 
+# Eqavlient to: export TACO_ORDERS_PAGESIZE=10    
+taco:
+  orders:
+    pageSize: 10
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+## All it takes to make a profile active is to include it 
+## in the list of profile names given to the spring.profiles.active 
+#spring:
+#  profiles:
+#    active:
+#    - dev
+
+#If you set the active
+#profile in application.yml, then that profile becomes the default profile, and you
+#achieve none of the benefits of using profiles to separate the production-specific
+#properties from development properties. Instead, I recommend that you set the active
+#profile(s) with environment variables. On the production environment, you would set
+#SPRING_PROFILES_ACTIVE like this:
+#% export SPRING_PROFILES_ACTIVE=prod
+
+
+
+#Another way to specify profile-specific properties works only with YAML configuration.
+#It involves placing profile-specific properties alongside non-profiled properties
+#in application.yml, separated by three hyphens and the spring.profiles property to
+#name the profile. When applying the production properties to application.yml in this
+#way, the entire application.yml would look like this:
+#
+#logging:
+#  level:
+#  tacos: DEBUG
+#---
+#spring:
+#  profiles: prod
+#  datasource:
+#    url: jdbc:mysql://localhost/tacocloud
+#    username: tacouser
+#    password: tacopassword
+#logging:
+#  level:
+#    tacos: WARN
+
+
+
+

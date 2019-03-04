@@ -16,11 +16,19 @@ public class TacoCloudApplication {
 	public static void main(String[] args) {
 		
 		SpringApplication.run(TacoCloudApplication.class, args);
-		System.out.println(SpringApplication.class);
-				
+		System.out.println(SpringApplication.class);	
 	}
 	
+	
 
+	
+	/*To prevent the ingredient data from being loaded every time the application 
+	  starts in a production deployment, you could annotate the CommandLineRunner 
+	  bean method with @Profile'
+	  @Bean
+      @Profile("dev")
+      public CommandLineRunner*/
+	
 	  @Bean
 	  public CommandLineRunner dataLoader(IngredientRepository repo) {
 	    return new CommandLineRunner() {

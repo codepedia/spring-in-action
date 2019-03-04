@@ -74,4 +74,106 @@ This is accomplished by having a module require a test-jar of a previously built
 If -Dmaven.test.skip=true (or simply -Dmaven.test.skip) is specified, the test-jars aren't built, and any module that relies on them will fail its build.
 
 In contrast, when you use -DskipTests, Maven does not run the tests, but it does compile them and build the test-jar, making it available for the subsequent modules.
+ch05------------------------
+Configuration properties are nothing more than properties on beans in the Spring application context that can be set from one of several property sources, including
+JVM system properties, command-line arguments, and environment variables.
+
+there are two different (but related) kinds of configurations in Spring:
+1) Bean wiring—Configuration that declares application components to be created
+as beans in the Spring application context and how they should be injected into
+each other.
+2) Property injection—Configuration that sets values on beans in the Spring application
+context.
+
+# WIthout spring boot, you will need to explicitly add Datasource bean
+If the H2 dependency is available in the run-time classpath, then Spring Boot automatically
+creates an appropriate DataSource bean in the Spring application context.
+
+The Spring environment pulls from several property
+sources, including
+ JVM system properties
+ Operating system environment variables
+ Command-line arguments
+ Application property configuration files
+
+
+
+------------------------
+(https://logback.qos.ch/) is what spring uses for logging. To set props, we use application.yml
+With Spring Boot configuration properties, you can make those changes without having to
+create a logback.xml file.  To set the logging levels, you create properties that are prefixed with logging.  level,
+
+example:
+logging:
+level:
+root: WARN
+org:
+springframework:
+security: DEBUG
+
+------------------------
+configuration properties are nothing more than properties of
+beans that have been designated to accept configurations from Spring’s environment
+abstraction. What I didn’t mention is how those beans are designated to consume
+those configurations.
+
+To support property injection of configuration properties, Spring Boot provides
+the @ConfigurationProperties annotation. When placed on any Spring bean, it
+specifies that the properties of that bean can be injected from properties in the
+Spring environment.
+To demonstrate how @ConfigurationProperties works, suppose that you’ve added
+the following method to OrderController to list the authenticated user’s past orders:
+@GetMapping
+public String ordersForUser(
+@AuthenticationPrincipal User user, Model model) {
+	model.addAttribute("orders",
+	orderRepo.findByUserOrderByPlacedAtDesc(user));
+
+return "orderList";
+}
+------------------------
+# Instead of hardcoding things, we can make a controller extends a props-file:
+
+@ConfigurationProperties(prefix="taco.orders")
+
+set this property in application.yml like this:
+taco:
+  orders:
+  pageSize: 10
+
+if you need to make a quick change while in production, you can do so without
+	having to rebuild and redeploy the application by setting the taco.orders.pageSize
+	property as an environment variable:
+	$ export TACO_ORDERS_PAGESIZE=10
+
+
+
+------------------------
+
+
+The beans that are automatically configured by Spring Boot are all configurable by
+properties drawn from the Spring environment. As a simple example, suppose that
+you would like the application’s underlying servlet container to listen for requests
+on some port other than the default port of 8080. To do that, specify a different port
+by setting the server.port property in src/main/resources/application.properties
+like this:
+server.port=9090
+
+
+Personally, I prefer using YAML when setting configuration properties. Therefore,
+instead of using application.properties, I might set the server.port value in src/main/
+resources/application.yml like this:
+server:
+port: 9090
+
+If you’d prefer to configure that property externally, you could also specify the port
+when starting the application using a command-line argument:
+$ java -jar tacocloud-0.0.5-SNAPSHOT.jar --server.port=9090
+
+
+
+------------------------
+------------------------
+------------------------
+------------------------
 ------------------------
