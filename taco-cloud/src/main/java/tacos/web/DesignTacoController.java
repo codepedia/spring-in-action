@@ -1,28 +1,30 @@
-	package tacos.web;
-	import java.util.ArrayList;
-import java.util.Arrays;
-	import java.util.List;
-	import java.util.stream.Collectors;
-	import javax.validation.Valid;
+package tacos.web;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-	import org.springframework.ui.Model;
-	import org.springframework.validation.Errors;
-	import org.springframework.web.bind.annotation.GetMapping;
-	import org.springframework.web.bind.annotation.ModelAttribute;
-	import org.springframework.web.bind.annotation.PostMapping;
-	import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import lombok.Data;
-    import lombok.extern.slf4j.Slf4j;
-	import tacos.Ingredient;
-	import tacos.Ingredient.Type;
+import lombok.extern.slf4j.Slf4j;
+import tacos.Ingredient;
+import tacos.Ingredient.Type;
 import tacos.Order;
 import tacos.Taco;
+import tacos.User;
 import tacos.data.IngredientRepository;
 import tacos.data.TacoRepository;
+import tacos.data.UserRepository;
 
 	@Slf4j
 	/* https://ww.slf4j.org/) Logger in the class. This modest annotation has
@@ -53,13 +55,17 @@ import tacos.data.TacoRepository;
 	TacoController and use it to provide a list of Ingredient objects, instead of hard coding*/	
 
 	  private final IngredientRepository ingredientRepo;
-	  private TacoRepository designRepo;
+	  
+	  private TacoRepository tacoRepo;
+
+	  private UserRepository userRepo;
 	
 	
 	@Autowired  /* Dependency injection */
-	public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository designRepo) {
+	public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository tacoRepo, UserRepository userRepo) {
 	this.ingredientRepo = ingredientRepo;
-	this.designRepo     = designRepo;
+	this.tacoRepo       = tacoRepo;
+	this.userRepo       = userRepo;
 	}
 	
 	
@@ -69,7 +75,7 @@ import tacos.data.TacoRepository;
 	  }
 	  
 	  @ModelAttribute(name = "taco")
-	  public Taco taco() {
+	  public Taco design() {
 	    return new Taco();
 	  }
 
@@ -102,7 +108,7 @@ import tacos.data.TacoRepository;
 		
 	//tag::showDesignForm[]
 	  @GetMapping
-	  public String showDesignForm(Model model) {
+	  public String showDesignForm(Model model, Principal principal ) {
 		  
 		  /*
 		   * Once the list of ingredients is ready, the next few lines of showDesignForm() filters
@@ -126,6 +132,10 @@ import tacos.data.TacoRepository;
 		
 		for (Type type : types) {
 		model.addAttribute(type.toString().toLowerCase(),filterByType(ingredients, type));}
+		
+	    String username = principal.getName();
+	    User user = userRepo.findByUsername(username);
+	    model.addAttribute("user", user);
 				
 	    return "design";
 	    
@@ -134,34 +144,43 @@ import tacos.data.TacoRepository;
 	    /*model.addAttribute("design", new Taco()); //new instance of taco (name, id , list of ingredients) */
 	  }
 
-	  // Takes an array list of ingredients created by the add ingredeints methods 
-	  // and filters the result by the type, using stream.
-	  
-	  /*Class Object is the root of the class hierarchy. Every class has Object as a superclass. 
-	   * All objects, including arrays, implement the methods of this class.
-	   * fetches all the ingredients from the database before filtering them into 
-	   * distinct type in the model. */
-	  private Object filterByType(List<Ingredient> ingredients, Type type) {
-		   return ingredients.stream().filter(x -> x.getType().equals(type))
-				                              .collect(Collectors.toList());
-		}
-	  
+
 	  @PostMapping		  
-	  public String processOrder(@Valid Taco design, Errors errors) {
+	  public String processOrder(@Valid Taco taco, Errors errors, @ModelAttribute Order order) {
 	    if (errors.hasErrors()) {
 		    return "orderForm";
 		  }
 		  // This should be of type Design and not String
-		  System.out.println("Print Desgin vals   :" + design); //DEBUG: ERROR:Process Design:  null
-		  log.info("Process Design:  " + design );
+		  System.out.println("Print Desgin vals   :" + taco); //DEBUG: ERROR:Process Design:  null
+		  log.info("Process Design:  " + taco );
+		  
+		  
 		  
 		  /*"redirect:", indicating that this is a redirect view.
 		   More specifically, it indicates that after processDesign() 
 		   completes, the user’s browser should be redirected to the 
 		   relative path /order/current.*/
 		  
-		  System.out.println("Procesing the Design object" + design);
+		  System.out.println("Procesing the Design object" + taco);
+		  
+		  Taco saved = tacoRepo.save(taco);
+		  order.addDesign(saved);
 		  
 		  return "redirect:/orders/current";
 	  }
+	  
+	  
+	  
+	  // Takes an array list of ingredients created by the add ingredeints methods 
+	  // and filters the result by the type, using stream.
+
+	  /*Class Object is the root of the class hierarchy. Every class has Object as a superclass. 
+	   * All objects, including arrays, implement the methods of this class.
+	   * fetches all the ingredients from the database before filtering them into 
+	   * distinct type in the model. CHanged the method from object to -> List<Ingredient> */
+	  private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
+		   return ingredients.stream().filter(x -> x.getType().equals(type))
+				                              .collect(Collectors.toList());
+		}
+	  
 	}

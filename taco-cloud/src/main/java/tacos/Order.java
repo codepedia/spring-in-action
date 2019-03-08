@@ -70,6 +70,7 @@ public class Order implements Serializable {
   //end::allButDetailProperties[]
    */
   
+  
 //tag::allButDetailProperties[]
   @ManyToMany(targetEntity=Taco.class)
   private List<Taco> tacos = new ArrayList<>();
@@ -77,6 +78,7 @@ public class Order implements Serializable {
   public void addDesign(Taco design) {
     this.tacos.add(design);
   }
+  
   
   @PrePersist
   void placedAt() {
